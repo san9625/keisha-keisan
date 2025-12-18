@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>傾斜割り勘計算ツール</title>
+  <meta name="description" content="各ランク（１から偉い順）の人数と合計金額を入力するだけ！" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255, 255, 255, 0.08);
+      --card2: rgba(255, 255, 255, 0.06);
+      --txt: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.72);
+      --muted2: rgba(255, 255, 255, 0.55);
+      --border: rgba(255, 255, 255, 0.16);
+      --accent: rgba(122, 162, 255, 0.95);
+      --danger: rgba(255, 120, 120, 0.95);
+      --ok: rgba(120, 255, 190, 0.9);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--txt);
+      background:
+        radial-gradient(900px 500px at 10% 5%, rgba(122,162,255,0.25), transparent 60%),
+        radial-gradient(900px 500px at 95% 20%, rgba(120,255,190,0.14), transparent 55%),
+        radial-gradient(700px 500px at 70% 95%, rgba(255,180,120,0.10), transparent 60%),
+        var(--bg);
+      min-height: 100svh;
+    }
+
+    .wrap { max-width: 980px; margin: 0 auto; padding: 18px 14px 40px; }
+    header { padding: 10px 4px 16px; }
+    h1 {
+      margin: 6px 0 6px;
+      font-size: 20px;
+      letter-spacing: 0.2px;
+      line-height: 1.25;
+    }
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    @media (min-width: 860px) {
+      .grid { grid-template-columns: 1.05fr 0.95fr; }
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .card h2 {
+      font-size: 15px;
+      margin: 0 0 12px;
+      color: rgba(255,255,255,0.90);
+    }
+
+    .row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 520px) {
+      .row { grid-template-columns: 1fr 1fr; }
+    }
+
+    label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    input, select, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.22);
+      color: var(--txt);
+      padding: 12px 12px;
+      font-size: 16px;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: rgba(122,162,255,0.75);
+      box-shadow: 0 0 0 3px rgba(122,162,255,0.18);
+    }
+
+    .btnrow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    button {
+      cursor: pointer;
+      background: rgba(122,162,255,0.22);
+      border-color: rgba(122,162,255,0.45);
+      font-weight: 600;
+    }
+    button.secondary {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.20);
+      font-weight: 600;
+    }
+    button.danger {
+      background: rgba(255,120,120,0.14);
+      border-color: rgba(255,120,120,0.38);
+    }
+    button:active { transform: translateY(1px); }
+
+    .ranks {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .rankline {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.16);
+    }
+    .tag {
+      font-size: 12px;
+      color: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.07);
+      padding: 8px 10px;
+      border-radius: 999px;
+      text-align: center;
+      user-select: none;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted2);
+      line-height: 1.55;
+    }
+
+    .err {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,120,120,0.35);
+      background: rgba(255,120,120,0.10);
+      color: rgba(255,220,220,0.95);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .resultbox {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+    .resulthead {
+      padding: 12px 14px;
+      display: grid;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+    }
+    .resulthead .big {
+      font-size: 14px;
+      color: rgba(255,255,255,0.92);
+      font-weight: 700;
+    }
+    .resulthead .small {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      font-size: 12px;
+      color: rgba(255,255,255,0.70);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .sumline {
+      padding: 12px 14px;
+      display: grid;
+      gap: 6px;
+      background: rgba(0,0,0,0.10);
+    }
+    .sumline .ok { color: var(--ok); font-weight: 700; }
+    .sumline .muted { color: var(--muted2); font-size: 12px; line-height: 1.5; }
+
+    footer {
+      margin-top: 14px;
+      color: rgba(255,255,255,0.52);
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 0 4px;
+    }
+
+    .pillrow {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .pill {
+      font-size: 12px;
+      color: rgba(255,255,255,0.74);
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>傾斜割り勘計算ツール</h1>
+      <p class="sub">各ランク（１から偉い順）の人数と合計金額を入力するだけ！</p>
+    </header>
+
+    <div class="grid">
+      <section class="card" aria-label="入力">
+        <h2>入力</h2>
+
+        <div class="row">
+          <div>
+            <label for="total">合計金額（円）</label>
+            <input id="total" inputmode="numeric" placeholder="例）35000" />
+          </div>
+          <div>
+            <label for="slope">傾斜率</label>
+            <select id="slope">
+              <option value="steep">急（差が大きい）</option>
+              <option value="normal" selected>普通</option>
+              <option value="gentle">なだらか（差が小さい）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="hint">
+          ランクは <b>1が偉い（多く支払う）</b>想定です。人数が0のランクは計算から除外されます。
+        </div>
+
+        <div style="margin-top:12px;">
+          <label>ランク別人数</label>
+          <div id="ranks" class="ranks"></div>
+
+          <div class="btnrow">
+            <button id="addRank" type="button" class="secondary">＋ ランクを追加（最大10）</button>
+            <button id="reset" type="button" class="danger">リセット</button>
+          </div>
+
+          <div class="btnrow" style="grid-template-columns: 1fr;">
+            <button id="calc" type="button">計算する</button>
+          </div>
+
+          <div id="err" class="err" role="alert"></div>
+        </div>
+      </section>
+
+      <section class="card" aria-label="結果">
+        <h2>結果</h2>
+
+        <div class="resultbox" id="resultBox">
+          <div class="resulthead">
+            <div class="big">各ランク 1人あたりの支払い額</div>
+            <div class="small">「合計金額」と「人数×単価の合計」が一致するよう、端数は1円単位で自動調整します（基本は高いランク側に加算）。</div>
+          </div>
+
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>ランク</th>
+                  <th class="num">人数</th>
+                  <th class="num">1人あたり（円）</th>
+                  <th class="num">小計（円）</th>
+                </tr>
+              </thead>
+              <tbody id="resultBody">
+                <tr>
+                  <td colspan="4" style="color: rgba(255,255,255,0.55); font-size: 13px;">
+                    まだ計算していません。入力して「計算する」を押してください。
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="sumline">
+            <div id="sumText" class="ok">合計：—</div>
+            <div id="sumNote" class="muted">※結果はスクリーンショットで保存する想定です。</div>
+          </div>
+        </div>
+
+        <footer>
+          <div>Tips：飲み会中は入力が雑になりがちなので、まず「合計金額」と「人数」だけ入れて計算 → スクショ保存が楽です。</div>
+        </footer>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // ----- 設定 -----
+    const DEFAULT_RANKS = 5;
+    const MAX_RANKS = 10;
+
+    // 傾斜率：指数のベース（大きいほど差が大きい）
+    // rank 1（偉い）: weight=1
+    // rank が大きいほど weight が減る => 支払いが少なくなる
+    const SLOPE_BASE = {
+      steep: 1.25,
+      normal: 1.15,
+      gentle: 1.08,
+    };
+
+    // ----- ユーティリティ -----
+    const yen = (n) => {
+      if (!Number.isFinite(n)) return "—";
+      return n.toLocaleString("ja-JP");
+    };
+
+    const parseYen = (s) => {
+      if (typeof s !== "string") return NaN;
+      const cleaned = s.replace(/[^\d]/g, "");
+      return cleaned ? Number(cleaned) : NaN;
+    };
+
+    const clampInt = (n, min, max) => Math.min(max, Math.max(min, n));
+
+    // ----- UI生成 -----
+    const ranksEl = document.getElementById("ranks");
+    const totalEl = document.getElementById("total");
+    const slopeEl = document.getElementById("slope");
+    const errEl = document.getElementById("err");
+
+    const resultBodyEl = document.getElementById("resultBody");
+    const sumTextEl = document.getElementById("sumText");
+
+    let rankCount = DEFAULT_RANKS;
+
+    function makeRankLine(rank) {
+      const wrap = document.createElement("div");
+      wrap.className = "rankline";
+
+      const tag = document.createElement("div");
+      tag.className = "tag";
+      tag.textContent = `ランク ${rank}`;
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.inputMode = "numeric";
+      input.placeholder = "人数（例）3";
+      input.dataset.rank = String(rank);
+      input.setAttribute("aria-label", `ランク${rank}の人数`);
+
+      // スマホで扱いやすいよう、タップで全選択
+      input.addEventListener("focus", () => {
+        setTimeout(() => input.select(), 0);
+      });
+
+      wrap.appendChild(tag);
+      wrap.appendChild(input);
+      return wrap;
+    }
+
+    function renderRanks() {
+      ranksEl.innerHTML = "";
+      for (let r = 1; r <= rankCount; r++) {
+        ranksEl.appendChild(makeRankLine(r));
+      }
+    }
+
+    function showError(msg) {
+      if (!msg) {
+        errEl.style.display = "none";
+        errEl.textContent = "";
+        return;
+      }
+      errEl.style.display = "block";
+      errEl.textContent = msg;
+    }
+
+    // ----- 計算ロジック -----
+    function getWeights(base, count) {
+      const weights = [];
+      for (let r = 1; r <= count; r++) {
+        const w = Math.pow(base, -(r - 1)); // rank1=1, rankが上がるほど小さくする
+        weights.push(w);
+      }
+      return weights;
+    }
+
+    function readPeopleCounts() {
+      const inputs = ranksEl.querySelectorAll("input[data-rank]");
+      const counts = [];
+      inputs.forEach((inp) => {
+        const n = parseYen(inp.value);
+        counts.push(Number.isFinite(n) ? clampInt(n, 0, 9999) : 0);
+      });
+      return counts;
+    }
+
+    function compute(total, counts, weights) {
+      // 対象：人数>0 のランクのみ
+      const active = [];
+      for (let i = 0; i < counts.length; i++) {
+        if (counts[i] > 0) active.push(i);
+      }
+      if (active.length === 0) {
+        throw new Error("人数が1人も入力されていません。少なくとも1つのランクに人数を入力してください。");
+      }
+
+      // 重み合計（人数×重み）
+      let W = 0;
+      for (const i of active) W += counts[i] * weights[i];
+      if (W <= 0) throw new Error("入力値が不正です。");
+
+      const unit = total / W;
+
+      // まずは floor で仮計算
+      const pay = new Array(counts.length).fill(0);
+      let subtotal = 0;
+
+      // 端数調整のための候補（小数部が大きい順に +1 したい）
+      const fracs = []; // {i, frac}
+
+      for (const i of active) {
+        const raw = unit * weights[i];
+        const flo = Math.floor(raw);
+        pay[i] = flo;
+        subtotal += flo * counts[i];
+
+        const frac = raw - flo;
+        fracs.push({ i, frac });
+      }
+
+      // 合計との差分を 1円ずつ配分して一致させる
+      let diff = total - subtotal;
+
+      // diff > 0 のとき：加算が必要
+      // 1円加算の効果は「そのランク人数分」増えるので、
+      // (人数が多いほど一気に増える) -> 端数調整は難しいが、今回は
+      // 「高ランク側を優先しつつ、実際に合計一致するまで」分配する。
+      // 具体的には：候補順（小数部大きい→rank高い優先）で1円ずつ加算し、
+      // 合計が超えそうなら別候補に回す（最大反復で収束）。
+      //
+      // ※人数が多いと1円加算で一気に増えるため、厳密な最適化より
+      // “実用上の分かりやすさ”を優先した手法です。
+
+      // 優先順：小数部 desc -> rank desc（高いランクほど優先）
+      fracs.sort((a, b) => {
+        if (b.frac !== a.frac) return b.frac - a.frac;
+        return b.i - a.i;
+      });
+
+      // 安全策：無限ループ防止
+      let guard = 0;
+      const GUARD_MAX = 200000;
+
+      while (diff !== 0 && guard < GUARD_MAX) {
+        guard++;
+
+        if (diff > 0) {
+          // 1円足してもよい候補を探す
+          let advanced = false;
+
+          for (const c of fracs) {
+            const i = c.i;
+            const step = counts[i]; // このランクを1円上げると合計は人数分増える
+            if (step <= 0) continue;
+
+            // 超過しない範囲で足す（最優先）
+            if (diff - step >= 0) {
+              pay[i] += 1;
+              diff -= step;
+              advanced = true;
+              break;
+            }
+          }
+
+          // どれも step が大きくて diff を埋められない場合：
+          // 仕方なく「最小 step のランク」に+1して超過する前に別調整…が必要だが、
+          // 円単位で合計一致が必須なので、ここでは
+          // いったん「人数が最小のランク」に加算し、後で減算で戻す方式にする。
+          if (!advanced) {
+            // 最小人数の active を選ぶ（同数なら高ランク）
+            const minIdx = active.slice().sort((i, j) => {
+              if (counts[i] !== counts[j]) return counts[i] - counts[j];
+              return j - i;
+            })[0];
+            pay[minIdx] += 1;
+            diff -= counts[minIdx];
+          }
+        } else {
+          // diff < 0 のとき：減算が必要（払いすぎ）
+          // 優先順：小数部が小さい（=切り捨て損が少ない）-> rank低い（安い側）から下げる
+          const order = fracs.slice().sort((a, b) => {
+            if (a.frac !== b.frac) return a.frac - b.frac;
+            return a.i - b.i;
+          });
+
+          let advanced = false;
+          for (const c of order) {
+            const i = c.i;
+            const step = counts[i];
+            if (step <= 0) continue;
+
+            // 1円下げられる範囲（マイナス支払いは不可）
+            if (pay[i] > 0) {
+              pay[i] -= 1;
+              diff += step;
+              advanced = true;
+              break;
+            }
+          }
+          if (!advanced) break;
+        }
+      }
+
+      // 最終 subtotal
+      let finalTotal = 0;
+      for (const i of active) finalTotal += pay[i] * counts[i];
+
+      return { pay, counts, finalTotal, unit, weights };
+    }
+
+    function renderResult(result) {
+      const { pay, counts, finalTotal } = result;
+
+      // テーブル行を作る（人数>0のみ表示）
+      const rows = [];
+      for (let i = 0; i < counts.length; i++) {
+        if (counts[i] <= 0) continue;
+        const per = pay[i];
+        const sub = per * counts[i];
+        rows.push({ rank: i + 1, people: counts[i], per, sub });
+      }
+
+      // ランク順で表示
+      rows.sort((a, b) => a.rank - b.rank);
+
+      resultBodyEl.innerHTML = "";
+      for (const r of rows) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>ランク ${r.rank}</td>
+          <td class="num">${yen(r.people)}</td>
+          <td class="num"><b>${yen(r.per)}</b></td>
+          <td class="num">${yen(r.sub)}</td>
+        `;
+        resultBodyEl.appendChild(tr);
+      }
+
+      sumTextEl.textContent = `合計：${yen(finalTotal)} 円`;
+    }
+
+    // ----- イベント -----
+    document.getElementById("addRank").addEventListener("click", () => {
+      if (rankCount >= MAX_RANKS) {
+        showError(`ランクは最大 ${MAX_RANKS} までです。`);
+        return;
+      }
+      showError("");
+      rankCount += 1;
+      renderRanks();
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      rankCount = DEFAULT_RANKS;
+      totalEl.value = "";
+      slopeEl.value = "normal";
+      renderRanks();
+      showError("");
+      resultBodyEl.innerHTML = `
+        <tr>
+          <td colspan="4" style="color: rgba(255,255,255,0.55); font-size: 13px;">
+            まだ計算していません。入力して「計算する」を押してください。
+          </td>
+        </tr>`;
+      sumTextEl.textContent = "合計：—";
+      // 画面上部へ（スマホ操作向け）
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("calc").addEventListener("click", () => {
+      try {
+        showError("");
+
+        const total = parseYen(totalEl.value);
+        if (!Number.isFinite(total) || total <= 0) {
+          throw new Error("合計金額が未入力、または不正です。例：35000 のように入力してください。");
+        }
+        if (total > 999999999) {
+          throw new Error("合計金額が大きすぎます。");
+        }
+
+        const counts = readPeopleCounts();
+        const base = SLOPE_BASE[slopeEl.value] ?? SLOPE_BASE.normal;
+        const weights = getWeights(base, counts.length);
+
+        const result = compute(total, counts, weights);
+
+        // 合計が一致しない場合（理論上起きにくいが念のため）
+        if (result.finalTotal !== total) {
+          throw new Error(`内部調整に失敗しました（合計が一致しません）。 total=${total}, result=${result.finalTotal}`);
+        }
+
+        renderResult(result);
+
+        // 結果が見える位置にスクロール（スマホ向け）
+        document.getElementById("resultBox").scrollIntoView({ behavior: "smooth", block: "start" });
+
+      } catch (e) {
+        showError(e && e.message ? e.message : "エラーが発生しました。入力値を確認してください。");
+      }
+    });
+
+    // 合計金額は「,」や「円」混じりでもOKにしたいので、入力中に整形はしない（貼り付けも想定）
+    // 初期レンダリング
+    renderRanks();
+  </script>
+</body>
+</html>
