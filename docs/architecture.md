@@ -46,11 +46,12 @@
 - rankが大きいほどweightが増える（=支払いが増える）
 
 傾斜率ごとの base 値（例）
-- steep:  base = 1.25
-- normal: base = 1.15
-- gentle: base = 1.08
+- super steep:  base = 1.60
+- steep:  base = 1.40
+- normal: base = 1.20
+- gentle: base = 1.15
 
-weight(rank) = base^(rank-1)
+weight(rank) = base^(-(rank-1))
 
 ### 5.2 Core Formula
 対象ランク集合 A = { rank | peopleCount[rank] > 0 }
@@ -116,7 +117,6 @@ diff を 0 にするまで、pay[r] を 1円単位で調整する。
 - No server-side runtime monitoring required.
 
 ## 8. Future Extensions (Out of Scope)
-- PWA化（オフライン対応）
 - URLでパラメータ共有
 - 履歴保存（DynamoDB等）
 - 多言語対応（EN/JP）

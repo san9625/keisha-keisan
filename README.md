@@ -18,9 +18,11 @@
 - 計算結果の保存（DB）・メール送信・エクスポート
 - 管理画面、課金、履歴機能
 
-## Repository Structure（想定）
+## Repository Structure
 .
 ├── index.html # 1ファイル完結（HTML/CSS/JS）
+├── robots.txt # クローラ制御（sitemapの場所もここに記載）
+├── sitemap.xml # サイトマップ（公開ドメインに合わせて更新）
 ├── assets/ # 画像などを置く場合
 ├── docs/
 │ └── architecture.md # アーキテクチャ・要件詳細

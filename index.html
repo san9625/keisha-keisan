@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>傾斜割り勘計算ツール</title>
-  <meta name="description" content="各ランク（１から偉い順）の人数と合計金額を入力するだけ！" />
+  <title>傾斜くん｜飲み会の傾斜割り勘計算ツール｜割り勘</title>
+  <meta name="description" content="飲み会・歓送迎会の割り勘を傾斜計算。鬼・松・竹・梅の傾斜率で公平に計算できる無料スマホ対応ツール。合計金額とランク人数を入れるだけの簡単操作。" />
   <style>
     :root {
-      --bg: #0b1020;
-      --card: rgba(255, 255, 255, 0.08);
-      --card2: rgba(255, 255, 255, 0.06);
-      --txt: rgba(255, 255, 255, 0.92);
-      --muted: rgba(255, 255, 255, 0.72);
-      --muted2: rgba(255, 255, 255, 0.55);
-      --border: rgba(255, 255, 255, 0.16);
-      --accent: rgba(122, 162, 255, 0.95);
-      --danger: rgba(255, 120, 120, 0.95);
-      --ok: rgba(120, 255, 190, 0.9);
-      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --bg: #eef2ff;
+      --card: rgba(255, 255, 255, 0.96);
+      --card2: rgba(255, 255, 255, 0.88);
+      --txt: rgba(32, 42, 80, 0.94);
+      --muted: rgba(32, 42, 80, 0.68);
+      --muted2: rgba(32, 42, 80, 0.54);
+      --border: rgba(108, 136, 220, 0.28);
+      --accent: rgba(86, 116, 255, 0.92);
+      --danger: rgba(240, 96, 130, 0.92);
+      --ok: rgba(38, 160, 130, 0.92);
+      --shadow: 0 10px 34px rgba(45, 60, 120, 0.12);
       --radius: 16px;
     }
 
@@ -27,15 +27,18 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Sans", "Apple Color Emoji", "Segoe UI Emoji";
       color: var(--txt);
       background:
-        radial-gradient(900px 500px at 10% 5%, rgba(122,162,255,0.25), transparent 60%),
-        radial-gradient(900px 500px at 95% 20%, rgba(120,255,190,0.14), transparent 55%),
-        radial-gradient(700px 500px at 70% 95%, rgba(255,180,120,0.10), transparent 60%),
+        radial-gradient(900px 520px at 12% 8%, rgba(120, 150, 255, 0.35), transparent 60%),
+        radial-gradient(900px 520px at 88% 12%, rgba(140, 210, 255, 0.25), transparent 60%),
+        radial-gradient(820px 520px at 65% 92%, rgba(255, 210, 150, 0.22), transparent 62%),
         var(--bg);
       min-height: 100svh;
     }
 
     .wrap { max-width: 980px; margin: 0 auto; padding: 18px 14px 40px; }
-    header { padding: 10px 4px 16px; }
+    header {
+      padding: 10px 4px 16px;
+      text-align: center;
+    }
     h1 {
       margin: 6px 0 6px;
       font-size: 20px;
@@ -47,6 +50,22 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
+    }
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 6px;
+      padding: 4px 10px;
+      color: rgba(32,42,80,0.78);
+      background: rgba(228,236,255,0.9);
+      border: 1px solid rgba(108,136,220,0.22);
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .sub.lead {
+      color: rgba(32,42,80,0.82);
+      font-weight: 600;
     }
 
     .grid {
@@ -70,7 +89,7 @@
     .card h2 {
       font-size: 15px;
       margin: 0 0 12px;
-      color: rgba(255,255,255,0.90);
+      color: rgba(32,42,80,0.88);
     }
 
     .row { display: grid; grid-template-columns: 1fr; gap: 10px; }
@@ -83,15 +102,15 @@
       width: 100%;
       border-radius: 12px;
       border: 1px solid var(--border);
-      background: rgba(0,0,0,0.22);
+      background: rgba(248, 250, 255, 0.9);
       color: var(--txt);
       padding: 12px 12px;
       font-size: 16px;
       outline: none;
     }
     input:focus, select:focus {
-      border-color: rgba(122,162,255,0.75);
-      box-shadow: 0 0 0 3px rgba(122,162,255,0.18);
+      border-color: rgba(86,116,255,0.75);
+      box-shadow: 0 0 0 3px rgba(86,116,255,0.22);
     }
 
     .btnrow {
@@ -102,18 +121,18 @@
     }
     button {
       cursor: pointer;
-      background: rgba(122,162,255,0.22);
-      border-color: rgba(122,162,255,0.45);
+      background: rgba(130,150,255,0.18);
+      border-color: rgba(86,116,255,0.45);
       font-weight: 600;
     }
     button.secondary {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.82);
+      border-color: rgba(108,136,220,0.24);
       font-weight: 600;
     }
     button.danger {
-      background: rgba(255,120,120,0.14);
-      border-color: rgba(255,120,120,0.38);
+      background: rgba(255,200,210,0.36);
+      border-color: rgba(240,96,130,0.45);
     }
     button:active { transform: translateY(1px); }
 
@@ -129,14 +148,14 @@
       align-items: center;
       padding: 10px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.16);
+      border: 1px solid rgba(108,136,220,0.22);
+      background: rgba(255,255,255,0.86);
     }
     .tag {
       font-size: 12px;
-      color: rgba(255,255,255,0.78);
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.07);
+      color: rgba(32,42,80,0.76);
+      border: 1px solid rgba(108,136,220,0.26);
+      background: rgba(230,236,255,0.85);
       padding: 8px 10px;
       border-radius: 999px;
       text-align: center;
@@ -155,29 +174,29 @@
       margin-top: 10px;
       padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid rgba(255,120,120,0.35);
-      background: rgba(255,120,120,0.10);
-      color: rgba(255,220,220,0.95);
+      border: 1px solid rgba(240,96,130,0.45);
+      background: rgba(255,220,228,0.9);
+      color: rgba(176,26,64,0.9);
       font-size: 13px;
       line-height: 1.5;
     }
 
     .resultbox {
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(108,136,220,0.22);
+      background: rgba(255,255,255,0.9);
       overflow: hidden;
     }
     .resulthead {
       padding: 12px 14px;
       display: grid;
       gap: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(108,136,220,0.2);
+      background: rgba(234,238,255,0.86);
     }
     .resulthead .big {
       font-size: 14px;
-      color: rgba(255,255,255,0.92);
+      color: rgba(32,42,80,0.9);
       font-weight: 700;
     }
     .resulthead .small {
@@ -192,13 +211,13 @@
     }
     th, td {
       padding: 11px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.10);
+      border-bottom: 1px solid rgba(108,136,220,0.15);
       text-align: left;
       font-size: 14px;
     }
     th {
       font-size: 12px;
-      color: rgba(255,255,255,0.70);
+      color: rgba(32,42,80,0.62);
       font-weight: 600;
       letter-spacing: 0.2px;
     }
@@ -208,14 +227,14 @@
       padding: 12px 14px;
       display: grid;
       gap: 6px;
-      background: rgba(0,0,0,0.10);
+      background: rgba(236,240,255,0.8);
     }
     .sumline .ok { color: var(--ok); font-weight: 700; }
     .sumline .muted { color: var(--muted2); font-size: 12px; line-height: 1.5; }
 
     footer {
       margin-top: 14px;
-      color: rgba(255,255,255,0.52);
+      color: var(--muted2);
       font-size: 12px;
       line-height: 1.6;
       padding: 0 4px;
@@ -229,21 +248,143 @@
     }
     .pill {
       font-size: 12px;
-      color: rgba(255,255,255,0.74);
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
+      color: rgba(32,42,80,0.7);
+      border: 1px solid rgba(108,136,220,0.22);
+      background: rgba(228,236,255,0.9);
       padding: 6px 10px;
       border-radius: 999px;
     }
+    .logic-box {
+      margin-top: 12px;
+      border: 1px solid rgba(108,136,220,0.18);
+      border-radius: 12px;
+      background: rgba(246,248,255,0.9);
+      padding: 10px 12px;
+    }
+    .logic-box summary {
+      cursor: pointer;
+      font-size: 13px;
+      color: rgba(32,42,80,0.82);
+      font-weight: 600;
+      list-style: none;
+    }
+    .logic-box summary::-webkit-details-marker { display: none; }
+    .logic-box summary::before {
+      content: "ℹ";
+      display: inline-block;
+      margin-right: 6px;
+      color: rgba(86,116,255,0.9);
+      font-weight: 700;
+    }
+    .logic-box p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .logic-box ul {
+      margin: 6px 0 0 16px;
+      padding: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
   </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "傾斜くん",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "description": "飲み会・歓送迎会の割り勘を鬼・松・竹・梅の傾斜率で公平に計算できる無料のスマホ対応傾斜割り勘ツールです。",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "featureList": [
+        "鬼・松・竹・梅の4段階傾斜率を選択",
+        "ランクを最大10まで追加",
+        "合計金額と人数入力だけで計算",
+        "結果をスクリーンショットで保存しやすい表示"
+      ],
+      "keywords": "傾斜割り勘, 飲み会, 幹事, 鬼, 松竹梅, スマホ対応"
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Keisha (傾斜くん)",
+          "url": "https://keisha.sakuraproduct.com/",
+          "logo": "https://keisha.sakuraproduct.com/assets/logo.png"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "合計金額と結果が必ず一致しますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "各ランクの計算後に1円単位の端数調整を行い、合計金額と一致するまで配分しています。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "鬼設定はどのくらい差がつきますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "傾斜率のベースを1.6にした最も差が大きい設定で、高ランクほど多く支払う計算になります。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "傾斜率の違いは？（鬼・松・竹・梅）",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "鬼=ベース1.6で差が最大、松=1.4、竹=1.2（標準）、梅=1.15（差が小さい）で、ランクが下がるほど支払額を小さくします。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "人数が0のランクはどうなりますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "0人のランクは自動的に計算対象から除外され、重み合計にも含まれません。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "入力したデータは保存されますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ローカルで計算する静的ページのため、入力値はサーバに保存されません。"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>傾斜割り勘計算ツール</h1>
-      <p class="sub">各ランク（１から偉い順）の人数と合計金額を入力するだけ！</p>
+      <div class="eyebrow" aria-label="特徴">無料・スマホ対応</div>
+      <h1>傾斜くん - 飲み会の傾斜割り勘計算</h1>
+      <p class="sub lead">人数と合計金額を入れるだけのシンプル操作で、鬼・松・竹・梅の4段階傾斜率で飲み会や歓送迎会の割り勘を即計算。</p>
+      <p class="sub">ランク1から役職やランクが高い順に人数を入力してください。人数が0のランクは自動で除外されるので、スキップもOKです。</p>
+      <div class="pillrow" aria-label="主な機能">
+        <span class="pill">合計金額と人数を入力するだけ30秒！</span>
+        <span class="pill">傾斜率は鬼・松・竹・梅から選択可能</span>
+        <span class="pill">入力欄はランク10まで追加可能</span>
+        <span class="pill">計算後はスクショ保存しやすい表示</span>
+      </div>
     </header>
-
     <div class="grid">
       <section class="card" aria-label="入力">
         <h2>入力</h2>
@@ -256,9 +397,10 @@
           <div>
             <label for="slope">傾斜率</label>
             <select id="slope">
-              <option value="steep">急（差が大きい）</option>
-              <option value="normal" selected>普通</option>
-              <option value="gentle">なだらか（差が小さい）</option>
+              <option value="super">鬼（差が最大）</option>
+              <option value="steep">松（差が大きい）</option>
+              <option value="normal" selected>竹（標準）</option>
+              <option value="gentle">梅（差が小さい）</option>
             </select>
           </div>
         </div>
@@ -290,7 +432,6 @@
         <div class="resultbox" id="resultBox">
           <div class="resulthead">
             <div class="big">各ランク 1人あたりの支払い額</div>
-            <div class="small">「合計金額」と「人数×単価の合計」が一致するよう、端数は1円単位で自動調整します（基本は高いランク側に加算）。</div>
           </div>
 
           <div style="overflow:auto;">
@@ -305,7 +446,7 @@
               </thead>
               <tbody id="resultBody">
                 <tr>
-                  <td colspan="4" style="color: rgba(255,255,255,0.55); font-size: 13px;">
+                  <td colspan="4" style="color: rgba(32,42,80,0.52); font-size: 13px;">
                     まだ計算していません。入力して「計算する」を押してください。
                   </td>
                 </tr>
@@ -317,6 +458,17 @@
             <div id="sumText" class="ok">合計：—</div>
             <div id="sumNote" class="muted">※結果はスクリーンショットで保存する想定です。</div>
           </div>
+          <details class="logic-box" aria-label="計算ロジック概要">
+            <summary>計算ロジックの概要（気になる方向け）</summary>
+            <p>ランク1を基準に、鬼・松・竹・梅で設定されたベース値を指数的に減衰させて重みを作り、合計金額を公平に配分しています。</p>
+            <ul>
+              <li>人数0のランクは除外し、重み合計を算出</li>
+              <li>合計金額 ÷ 重み合計 = 単位額を計算</li>
+              <li>各ランクの支払額は「単位額 × 重み」をいったん切り捨て</li>
+              <li>端数は小数部が大きい・高ランク優先で1円ずつ再配分し合計を一致させる</li>
+              <li>最終的に合計が入力金額と一致することをチェック</li>
+            </ul>
+          </details>
         </div>
 
         <footer>
@@ -324,6 +476,29 @@
         </footer>
       </section>
     </div>
+    <section class="card" aria-label="よくある質問" style="margin-top:12px;">
+      <h2>よくある質問</h2>
+      <details class="logic-box">
+        <summary>合計金額と結果が必ず一致しますか？</summary>
+        <p>計算後に1円単位の端数調整を行い、合計金額と完全に一致するまで配分しています。</p>
+      </details>
+      <details class="logic-box">
+        <summary>鬼設定はどのくらい差がつきますか？</summary>
+        <p>傾斜率ベース1.6の最も差が大きい設定で、高ランクほど多く支払う計算になります。</p>
+      </details>
+      <details class="logic-box">
+        <summary>傾斜率の違いは？（鬼・松・竹・梅）</summary>
+        <p>鬼=ベース1.6で差が最大、松=1.4、竹=1.2（標準）、梅=1.15（差が小さい）で、ランクが下がるほど支払額を少なくします。</p>
+      </details>
+      <details class="logic-box">
+        <summary>人数が0のランクはどうなりますか？</summary>
+        <p>人数0のランクは計算対象から自動で除外され、重み合計に含まれません。</p>
+      </details>
+      <details class="logic-box">
+        <summary>入力したデータは保存されますか？</summary>
+        <p>このページは静的に動作し、入力値はサーバへ送信・保存されません。</p>
+      </details>
+    </section>
   </div>
 
   <script>
@@ -335,9 +510,10 @@
     // rank 1（偉い）: weight=1
     // rank が大きいほど weight が減る => 支払いが少なくなる
     const SLOPE_BASE = {
-      steep: 1.25,
-      normal: 1.15,
-      gentle: 1.08,
+      super: 1.6,
+      steep: 1.4,
+      normal: 1.2,
+      gentle: 1.15,
     };
 
     // ----- ユーティリティ -----
@@ -600,7 +776,7 @@
       showError("");
       resultBodyEl.innerHTML = `
         <tr>
-          <td colspan="4" style="color: rgba(255,255,255,0.55); font-size: 13px;">
+          <td colspan="4" style="color: rgba(32,42,80,0.52); font-size: 13px;">
             まだ計算していません。入力して「計算する」を押してください。
           </td>
         </tr>`;

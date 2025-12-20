@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://keisha.sakuraproduct.com/sitemap.xml
