@@ -3,41 +3,59 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>傾斜くん｜飲み会の傾斜割り勘計算ツール｜割り勘</title>
-  <meta name="description" content="飲み会・歓送迎会の割り勘を傾斜計算。鬼・松・竹・梅の傾斜率で公平に計算できる無料スマホ対応ツール。合計金額とランク人数を入れるだけの簡単操作。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>傾斜くん - 飲み会の傾斜割り勘計算ツール</title>
+  <meta name="description" content="飲み会・歓送迎会の割り勘を傾斜計算。鬼・松・竹・梅の傾斜率で公平に計算できる無料スマホ対応ツール。合計金額と人数を入れるだけの簡単操作。" />
   <style>
     :root {
-      --bg: #eef2ff;
-      --card: rgba(255, 255, 255, 0.96);
-      --card2: rgba(255, 255, 255, 0.88);
-      --txt: rgba(32, 42, 80, 0.94);
-      --muted: rgba(32, 42, 80, 0.68);
-      --muted2: rgba(32, 42, 80, 0.54);
-      --border: rgba(108, 136, 220, 0.28);
-      --accent: rgba(86, 116, 255, 0.92);
-      --danger: rgba(240, 96, 130, 0.92);
+      --bg: #ffffff;
+      --card: rgba(255, 255, 255, 0.97);
+      --card2: rgba(246, 248, 255, 0.94);
+      --txt: rgba(31, 42, 68, 0.95);
+      --muted: rgba(31, 42, 68, 0.64);
+      --muted2: rgba(31, 42, 68, 0.52);
+      --border: rgba(47, 115, 255, 0.18);
+      --accent: rgba(47, 115, 255, 0.96);
+      --lime: rgba(184, 241, 113, 0.9);
+      --danger: rgba(243, 132, 94, 0.94);
       --ok: rgba(38, 160, 130, 0.92);
-      --shadow: 0 10px 34px rgba(45, 60, 120, 0.12);
+      --shadow: 0 12px 36px rgba(25, 45, 90, 0.16);
       --radius: 16px;
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: "IBM Plex Sans JP", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Sans", "Apple Color Emoji", "Segoe UI Emoji";
       color: var(--txt);
-      background:
-        radial-gradient(900px 520px at 12% 8%, rgba(120, 150, 255, 0.35), transparent 60%),
-        radial-gradient(900px 520px at 88% 12%, rgba(140, 210, 255, 0.25), transparent 60%),
-        radial-gradient(820px 520px at 65% 92%, rgba(255, 210, 150, 0.22), transparent 62%),
-        var(--bg);
+      background: var(--bg);
       min-height: 100svh;
+      overflow-x: hidden;
     }
 
-    .wrap { max-width: 980px; margin: 0 auto; padding: 18px 14px 40px; }
+    .wrap { max-width: 980px; width: 100%; margin: 0 auto; padding: 18px 16px 40px; }
     header {
       padding: 10px 4px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0 10px;
+      gap: 8px;
+    }
+    .logo img {
+      height: 44px;
+      width: auto;
+    }
+    @media (max-width: 520px) {
+      .logo img { height: 36px; }
     }
     h1 {
       margin: 6px 0 6px;
@@ -55,9 +73,9 @@
       display: inline-block;
       margin: 0 0 6px;
       padding: 4px 10px;
-      color: rgba(32,42,80,0.78);
-      background: rgba(228,236,255,0.9);
-      border: 1px solid rgba(108,136,220,0.22);
+      color: rgba(31,42,68,0.82);
+      background: rgba(235,240,255,0.92);
+      border: 1px solid rgba(47,115,255,0.22);
       border-radius: 999px;
       font-size: 11px;
       letter-spacing: 0.3px;
@@ -79,6 +97,7 @@
     }
 
     .card {
+      width: 100%;
       background: linear-gradient(180deg, var(--card), var(--card2));
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -102,15 +121,15 @@
       width: 100%;
       border-radius: 12px;
       border: 1px solid var(--border);
-      background: rgba(248, 250, 255, 0.9);
+      background: rgba(249, 251, 255, 0.94);
       color: var(--txt);
       padding: 12px 12px;
       font-size: 16px;
       outline: none;
     }
     input:focus, select:focus {
-      border-color: rgba(86,116,255,0.75);
-      box-shadow: 0 0 0 3px rgba(86,116,255,0.22);
+      border-color: rgba(47,115,255,0.82);
+      box-shadow: 0 0 0 3px rgba(47,115,255,0.24);
     }
 
     .btnrow {
@@ -121,20 +140,30 @@
     }
     button {
       cursor: pointer;
-      background: rgba(130,150,255,0.18);
-      border-color: rgba(86,116,255,0.45);
+      background: rgba(47,115,255,0.10);
+      border-color: rgba(47,115,255,0.32);
       font-weight: 600;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      box-shadow: 0 6px 18px rgba(25, 55, 120, 0.12);
+    }
+    button.primary {
+      background: linear-gradient(135deg, rgba(47,115,255,0.96), rgba(36,108,240,0.9));
+      color: #fff;
+      border-color: rgba(47,115,255,0.9);
+      box-shadow: 0 8px 24px rgba(25, 55, 120, 0.24);
     }
     button.secondary {
-      background: rgba(255,255,255,0.82);
-      border-color: rgba(108,136,220,0.24);
+      background: rgba(255,255,255,0.94);
+      border-color: rgba(47,115,255,0.2);
       font-weight: 600;
     }
     button.danger {
-      background: rgba(255,200,210,0.36);
-      border-color: rgba(240,96,130,0.45);
+      background: rgba(255, 224, 210, 0.5);
+      border-color: rgba(243,132,94,0.55);
     }
+    button:hover { box-shadow: 0 10px 26px rgba(28, 62, 130, 0.22); }
     button:active { transform: translateY(1px); }
+    button:focus-visible { box-shadow: 0 0 0 4px rgba(47,115,255,0.28); }
 
     .ranks {
       display: grid;
@@ -148,14 +177,14 @@
       align-items: center;
       padding: 10px;
       border-radius: 14px;
-      border: 1px solid rgba(108,136,220,0.22);
-      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(47,115,255,0.18);
+      background: rgba(255,255,255,0.9);
     }
     .tag {
       font-size: 12px;
-      color: rgba(32,42,80,0.76);
-      border: 1px solid rgba(108,136,220,0.26);
-      background: rgba(230,236,255,0.85);
+      color: rgba(31,42,68,0.78);
+      border: 1px solid rgba(47,115,255,0.26);
+      background: rgba(184,241,113,0.22);
       padding: 8px 10px;
       border-radius: 999px;
       text-align: center;
@@ -174,25 +203,30 @@
       margin-top: 10px;
       padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid rgba(240,96,130,0.45);
-      background: rgba(255,220,228,0.9);
-      color: rgba(176,26,64,0.9);
+      border: 1px solid rgba(243,132,94,0.6);
+      background: rgba(255, 228, 218, 0.94);
+      color: rgba(156, 60, 32, 0.92);
       font-size: 13px;
       line-height: 1.5;
     }
 
     .resultbox {
       border-radius: 16px;
-      border: 1px solid rgba(108,136,220,0.22);
-      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(47,115,255,0.16);
+      background: rgba(255,255,255,0.94);
       overflow: hidden;
+      transition: box-shadow 0.18s ease, transform 0.18s ease;
+    }
+    .resultbox.is-ready {
+      box-shadow: 0 14px 36px rgba(45, 60, 120, 0.16);
+      transform: translateY(-2px);
     }
     .resulthead {
       padding: 12px 14px;
       display: grid;
       gap: 6px;
-      border-bottom: 1px solid rgba(108,136,220,0.2);
-      background: rgba(234,238,255,0.86);
+      border-bottom: 1px solid rgba(47,115,255,0.16);
+      background: rgba(235,242,255,0.94);
     }
     .resulthead .big {
       font-size: 14px;
@@ -205,13 +239,28 @@
       line-height: 1.5;
     }
 
+    .resulthead .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(184,241,113,0.22);
+      color: rgba(31,42,68,0.86);
+      border: 1px solid rgba(47,115,255,0.26);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      width: fit-content;
+    }
+
+    .table-wrap { overflow: auto; max-height: 340px; }
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 100%;
     }
     th, td {
       padding: 11px 12px;
-      border-bottom: 1px solid rgba(108,136,220,0.15);
+      border-bottom: 1px solid rgba(90,123,255,0.13);
       text-align: left;
       font-size: 14px;
     }
@@ -220,8 +269,14 @@
       color: rgba(32,42,80,0.62);
       font-weight: 600;
       letter-spacing: 0.2px;
+      position: sticky;
+      top: 0;
+      background: rgba(235,242,255,0.98);
     }
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    tbody tr:nth-child(odd) { background: rgba(235,242,255,0.62); }
+    tbody tr:hover { background: rgba(47,115,255,0.08); }
 
     .sumline {
       padding: 12px 14px;
@@ -244,21 +299,22 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      justify-content: center;
       margin-top: 10px;
     }
     .pill {
       font-size: 12px;
       color: rgba(32,42,80,0.7);
-      border: 1px solid rgba(108,136,220,0.22);
+      border: 1px solid rgba(90,123,255,0.20);
       background: rgba(228,236,255,0.9);
       padding: 6px 10px;
       border-radius: 999px;
     }
     .logic-box {
       margin-top: 12px;
-      border: 1px solid rgba(108,136,220,0.18);
+      border: 1px solid rgba(47,115,255,0.16);
       border-radius: 12px;
-      background: rgba(246,248,255,0.9);
+      background: rgba(240,244,255,0.94);
       padding: 10px 12px;
     }
     .logic-box summary {
@@ -273,7 +329,7 @@
       content: "ℹ";
       display: inline-block;
       margin-right: 6px;
-      color: rgba(86,116,255,0.9);
+      color: rgba(47,115,255,0.9);
       font-weight: 700;
     }
     .logic-box p {
@@ -374,10 +430,11 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="eyebrow" aria-label="特徴">無料・スマホ対応</div>
+      <div class="logo" aria-hidden="true">
+        <img src="https://keisha.sakuraproduct.com/assets/logo.png" alt="傾斜くん" />
+      </div>
       <h1>傾斜くん - 飲み会の傾斜割り勘計算</h1>
-      <p class="sub lead">人数と合計金額を入れるだけのシンプル操作で、鬼・松・竹・梅の4段階傾斜率で飲み会や歓送迎会の割り勘を即計算。</p>
-      <p class="sub">ランク1から役職やランクが高い順に人数を入力してください。人数が0のランクは自動で除外されるので、スキップもOKです。</p>
+      <p class="sub lead">人数と合計金額を入れるだけのシンプル操作！</p>
       <div class="pillrow" aria-label="主な機能">
         <span class="pill">合計金額と人数を入力するだけ30秒！</span>
         <span class="pill">傾斜率は鬼・松・竹・梅から選択可能</span>
@@ -392,7 +449,8 @@
         <div class="row">
           <div>
             <label for="total">合計金額（円）</label>
-            <input id="total" inputmode="numeric" placeholder="例）35000" />
+            <input id="total" inputmode="decimal" pattern="[0-9]*" placeholder="例）35000" aria-describedby="totalHint" />
+            <div id="totalHint" class="hint">数字のみ。カンマや円を含んでも自動で除去します。</div>
           </div>
           <div>
             <label for="slope">傾斜率</label>
@@ -406,7 +464,7 @@
         </div>
 
         <div class="hint">
-          ランクは <b>1が偉い（多く支払う）</b>想定です。人数が0のランクは計算から除外されます。
+          ランクは <b>1が偉い（多く支払う）</b>想定です。人数が0（未入力）のランクは計算から除外されます。役職やランクが離れている場合は、特定のランクをスキップできます。
         </div>
 
         <div style="margin-top:12px;">
@@ -419,10 +477,10 @@
           </div>
 
           <div class="btnrow" style="grid-template-columns: 1fr;">
-            <button id="calc" type="button">計算する</button>
+            <button id="calc" type="button" class="primary">計算する</button>
           </div>
 
-          <div id="err" class="err" role="alert"></div>
+          <div id="err" class="err" role="alert" aria-live="polite"></div>
         </div>
       </section>
 
@@ -432,9 +490,11 @@
         <div class="resultbox" id="resultBox">
           <div class="resulthead">
             <div class="big">各ランク 1人あたりの支払い額</div>
+            <div class="pill-badge" id="slopeBadge" aria-live="polite"></div>
+            <div class="small">計算後に結果を表示します。</div>
           </div>
 
-          <div style="overflow:auto;">
+          <div class="table-wrap">
             <table>
               <thead>
                 <tr>
@@ -458,26 +518,22 @@
             <div id="sumText" class="ok">合計：—</div>
             <div id="sumNote" class="muted">※結果はスクリーンショットで保存する想定です。</div>
           </div>
-          <details class="logic-box" aria-label="計算ロジック概要">
-            <summary>計算ロジックの概要（気になる方向け）</summary>
-            <p>ランク1を基準に、鬼・松・竹・梅で設定されたベース値を指数的に減衰させて重みを作り、合計金額を公平に配分しています。</p>
-            <ul>
-              <li>人数0のランクは除外し、重み合計を算出</li>
-              <li>合計金額 ÷ 重み合計 = 単位額を計算</li>
-              <li>各ランクの支払額は「単位額 × 重み」をいったん切り捨て</li>
-              <li>端数は小数部が大きい・高ランク優先で1円ずつ再配分し合計を一致させる</li>
-              <li>最終的に合計が入力金額と一致することをチェック</li>
-            </ul>
-          </details>
         </div>
-
-        <footer>
-          <div>Tips：飲み会中は入力が雑になりがちなので、まず「合計金額」と「人数」だけ入れて計算 → スクショ保存が楽です。</div>
-        </footer>
       </section>
     </div>
     <section class="card" aria-label="よくある質問" style="margin-top:12px;">
       <h2>よくある質問</h2>
+      <details class="logic-box">
+        <summary>計算ロジックの概要</summary>
+        <p>ランク1を基準に、鬼・松・竹・梅で設定されたベース値を指数的に減衰させて重みを作り、合計金額を公平に配分しています。</p>
+        <ul>
+          <li>人数0のランクは除外し、重み合計を算出</li>
+          <li>合計金額 ÷ 重み合計 = 単位額を計算</li>
+          <li>各ランクの支払額は「単位額 × 重み」をいったん切り捨て</li>
+          <li>端数は小数部が大きい・高ランク優先で1円ずつ再配分し合計を一致させる</li>
+          <li>最終的に合計が入力金額と一致することをチェック</li>
+        </ul>
+      </details>
       <details class="logic-box">
         <summary>合計金額と結果が必ず一致しますか？</summary>
         <p>計算後に1円単位の端数調整を行い、合計金額と完全に一致するまで配分しています。</p>
@@ -516,6 +572,13 @@
       gentle: 1.15,
     };
 
+    const SLOPE_LABELS = {
+      super: "鬼（差が最大）",
+      steep: "松（差が大きい）",
+      normal: "竹（標準）",
+      gentle: "梅（差が小さい）",
+    };
+
     // ----- ユーティリティ -----
     const yen = (n) => {
       if (!Number.isFinite(n)) return "—";
@@ -538,6 +601,8 @@
 
     const resultBodyEl = document.getElementById("resultBody");
     const sumTextEl = document.getElementById("sumText");
+    const slopeBadgeEl = document.getElementById("slopeBadge");
+    const resultBoxEl = document.getElementById("resultBox");
 
     let rankCount = DEFAULT_RANKS;
 
@@ -551,7 +616,8 @@
 
       const input = document.createElement("input");
       input.type = "text";
-      input.inputMode = "numeric";
+      input.inputMode = "decimal";
+      input.pattern = "[0-9]*";
       input.placeholder = "人数（例）3";
       input.dataset.rank = String(rank);
       input.setAttribute("aria-label", `ランク${rank}の人数`);
@@ -581,6 +647,13 @@
       }
       errEl.style.display = "block";
       errEl.textContent = msg;
+    }
+
+    function updateSlopeBadge(key) {
+      const label = SLOPE_LABELS[key] || SLOPE_LABELS.normal;
+      if (slopeBadgeEl) {
+        slopeBadgeEl.textContent = `傾斜率：${label}`;
+      }
     }
 
     // ----- 計算ロジック -----
@@ -758,6 +831,13 @@
     }
 
     // ----- イベント -----
+    totalEl.addEventListener("focus", () => {
+      setTimeout(() => totalEl.select(), 0);
+    });
+    totalEl.addEventListener("input", () => {
+      if (errEl.style.display === "block") showError("");
+    });
+
     document.getElementById("addRank").addEventListener("click", () => {
       if (rankCount >= MAX_RANKS) {
         showError(`ランクは最大 ${MAX_RANKS} までです。`);
@@ -766,6 +846,14 @@
       showError("");
       rankCount += 1;
       renderRanks();
+      // 追加直後に新しい行へフォーカスし、見える位置までスクロール
+      setTimeout(() => {
+        const lastInput = ranksEl.querySelector("input[data-rank]:last-of-type");
+        if (lastInput) {
+          lastInput.focus();
+          lastInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 0);
     });
 
     document.getElementById("reset").addEventListener("click", () => {
@@ -781,6 +869,8 @@
           </td>
         </tr>`;
       sumTextEl.textContent = "合計：—";
+      resultBoxEl.classList.remove("is-ready");
+      updateSlopeBadge(slopeEl.value);
       // 画面上部へ（スマホ操作向け）
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -809,6 +899,8 @@
         }
 
         renderResult(result);
+        resultBoxEl.classList.add("is-ready");
+        updateSlopeBadge(slopeEl.value);
 
         // 結果が見える位置にスクロール（スマホ向け）
         document.getElementById("resultBox").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -821,6 +913,8 @@
     // 合計金額は「,」や「円」混じりでもOKにしたいので、入力中に整形はしない（貼り付けも想定）
     // 初期レンダリング
     renderRanks();
+  updateSlopeBadge(slopeEl.value);
+  slopeEl.addEventListener("change", () => updateSlopeBadge(slopeEl.value));
   </script>
 </body>
 </html>

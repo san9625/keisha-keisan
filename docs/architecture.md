@@ -117,7 +117,7 @@ diff を 0 にするまで、pay[r] を 1円単位で調整する。
 - No server-side runtime monitoring required.
 
 ## 8. Future Extensions (Out of Scope)
-- URLでパラメータ共有
+- 被リンクの作成
 - 履歴保存（DynamoDB等）
 - 多言語対応（EN/JP）
 - 広告表示（AdSense）
