@@ -10,7 +10,7 @@
 
 ### Usage Flow
 1. 合計金額（円）を入力
-2. 傾斜率（急/普通/なだらか）を選択
+2. 傾斜率（鬼/松/竹/梅/平等）を選択
 3. ランクごとの人数を入力（初期5段、必要なら最大10段まで追加）
 4. 「計算する」を押下
 5. 各ランク1人あたりの支払額が表示される（スクショで保存）
@@ -18,7 +18,7 @@
 ## 3. Functional Requirements
 ### Inputs
 - totalAmount: number（円）
-- slopeType: enum = { steep, normal, gentle }
+- slopeType: enum = { super, steep, normal, gentle, equal }
 - ranks: 1..10（rank=1が偉い・支払いが最も安い）
 - peopleCount[rank]: number（各ランク人数、0は除外）
 
@@ -50,6 +50,7 @@
 - steep:  base = 1.40
 - normal: base = 1.20
 - gentle: base = 1.15
+- equal:  base = 1.00（等分）
 
 weight(rank) = base^(-(rank-1))
 

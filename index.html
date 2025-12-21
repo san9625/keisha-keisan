@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <title>傾斜くん - 飲み会の傾斜割り勘計算ツール</title>
-  <meta name="description" content="飲み会・歓送迎会の割り勘を傾斜計算。鬼・松・竹・梅の傾斜率で公平に計算できる無料スマホ対応ツール。合計金額と人数を入れるだけの簡単操作。" />
+  <meta name="description" content="飲み会・歓送迎会の割り勘を傾斜計算。鬼・松・竹・梅・平等の傾斜率で公平に計算できる無料スマホ対応ツール。合計金額と人数を入れるだけの簡単操作。" />
   <style>
     :root {
       --bg: #ffffff;
@@ -353,19 +353,19 @@
       "name": "傾斜くん",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web",
-      "description": "飲み会・歓送迎会の割り勘を鬼・松・竹・梅の傾斜率で公平に計算できる無料のスマホ対応傾斜割り勘ツールです。",
+      "description": "飲み会・歓送迎会の割り勘を鬼・松・竹・梅・平等の傾斜率で公平に計算できる無料のスマホ対応傾斜割り勘ツールです。",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "JPY"
       },
       "featureList": [
-        "鬼・松・竹・梅の4段階傾斜率を選択",
+        "鬼・松・竹・梅・平等の5段階傾斜率を選択",
         "ランクを最大10まで追加",
         "合計金額と人数入力だけで計算",
         "結果をスクリーンショットで保存しやすい表示"
       ],
-      "keywords": "傾斜割り勘, 飲み会, 幹事, 鬼, 松竹梅, スマホ対応"
+      "keywords": "傾斜割り勘, 飲み会, 幹事, 鬼, 松竹梅, 平等, 等分, スマホ対応"
     }
   </script>
   <script type="application/ld+json">
@@ -381,6 +381,30 @@
         {
           "@type": "FAQPage",
           "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "サービスの使い方は？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "合計金額を入力し、傾斜率（鬼・松・竹・梅・平等）を選択。ランク別人数を入力し、「計算する」を押すだけで結果が表示されます。結果はスクショで保存してください。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "計算ロジックの概要",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ランク1を基準に、鬼・松・竹・梅・平等で設定されたベース値を指数的に減衰させて重みを作り、合計金額を公平に配分しています。人数0のランクは除外し、重み合計を算出。合計金額 ÷ 重み合計 = 単位額を計算。各ランクの支払額は「単位額 × 重み」をいったん切り捨て。端数は小数部が大きい・高ランク優先で1円ずつ再配分し合計を一致させる。最終的に合計が入力金額と一致することをチェックします。"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "端数は誰が負担しますか？",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "端数は小数部が大きい順かつ高ランク優先で1円ずつ配分し、高ランク側が先に負担します。"
+              }
+            },
             {
               "@type": "Question",
               "name": "合計金額と結果が必ず一致しますか？",
@@ -399,10 +423,10 @@
             },
             {
               "@type": "Question",
-              "name": "傾斜率の違いは？（鬼・松・竹・梅）",
+              "name": "傾斜率の違いは？（鬼・松・竹・梅・平等）",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "鬼=ベース1.6で差が最大、松=1.4、竹=1.2（標準）、梅=1.15（差が小さい）で、ランクが下がるほど支払額を小さくします。"
+                "text": "鬼=ベース1.6で差が最大、松=1.4、竹=1.2（標準）、梅=1.15（差が小さい）、平等=1.0（完全等分）です。ランクが下がるほど支払額を小さくしますが、平等を選べば全員同額になります。"
               }
             },
             {
@@ -437,7 +461,7 @@
       <p class="sub lead">人数と合計金額を入れるだけのシンプル操作！</p>
       <div class="pillrow" aria-label="主な機能">
         <span class="pill">合計金額と人数を入力するだけ30秒！</span>
-        <span class="pill">傾斜率は鬼・松・竹・梅から選択可能</span>
+        <span class="pill">傾斜率は鬼・松・竹・梅・平等から選択可能</span>
         <span class="pill">入力欄はランク10まで追加可能</span>
         <span class="pill">計算後はスクショ保存しやすい表示</span>
       </div>
@@ -450,7 +474,7 @@
           <div>
             <label for="total">合計金額（円）</label>
             <input id="total" inputmode="decimal" pattern="[0-9]*" placeholder="例）35000" aria-describedby="totalHint" />
-            <div id="totalHint" class="hint">数字のみ。カンマや円を含んでも自動で除去します。</div>
+            <div id="totalHint" class="hint">数字のみ入力してください。</div>
           </div>
           <div>
             <label for="slope">傾斜率</label>
@@ -459,6 +483,7 @@
               <option value="steep">松（差が大きい）</option>
               <option value="normal" selected>竹（標準）</option>
               <option value="gentle">梅（差が小さい）</option>
+              <option value="equal">平等（等分）</option>
             </select>
           </div>
         </div>
@@ -516,16 +541,27 @@
 
           <div class="sumline">
             <div id="sumText" class="ok">合計：—</div>
-            <div id="sumNote" class="muted">※結果はスクリーンショットで保存する想定です。</div>
+            <div id="sumNote" class="muted">※結果はスクリーンショットで保存してください。</div>
           </div>
         </div>
       </section>
     </div>
     <section class="card" aria-label="よくある質問" style="margin-top:12px;">
       <h2>よくある質問</h2>
+      <details class="logic-box" open>
+        <summary>サービスの使い方は？</summary>
+        <p>以下の手順ですぐに計算できます。</p>
+        <ul>
+          <li>合計金額を入力</li>
+          <li>傾斜率（鬼・松・竹・梅・平等）を選択。デフォルトは竹（標準）です。</li>
+          <li>ランク別人数を入力。その場で役職やランクが一番高い人をランク１に設定してください。役職やランクが離れている場合は、特定のランクをスキップできます。スキップすることで傾斜はより急になります。</li>
+          <li>「計算する」を押す</li>
+          <li>結果をスクショで保存する</li>
+        </ul>
+      </details>
       <details class="logic-box">
         <summary>計算ロジックの概要</summary>
-        <p>ランク1を基準に、鬼・松・竹・梅で設定されたベース値を指数的に減衰させて重みを作り、合計金額を公平に配分しています。</p>
+          <p>ランク1を基準に、鬼・松・竹・梅・平等で設定されたベース値を指数的に減衰させて重みを作り、合計金額を公平に配分しています。</p>
         <ul>
           <li>人数0のランクは除外し、重み合計を算出</li>
           <li>合計金額 ÷ 重み合計 = 単位額を計算</li>
@@ -533,6 +569,10 @@
           <li>端数は小数部が大きい・高ランク優先で1円ずつ再配分し合計を一致させる</li>
           <li>最終的に合計が入力金額と一致することをチェック</li>
         </ul>
+      </details>
+      <details class="logic-box">
+        <summary>端数は誰が負担しますか？</summary>
+        <p>端数は小数部が大きい順かつ高ランク優先で1円ずつ配分し、高ランク側が先に負担します。</p>
       </details>
       <details class="logic-box">
         <summary>合計金額と結果が必ず一致しますか？</summary>
@@ -543,8 +583,8 @@
         <p>傾斜率ベース1.6の最も差が大きい設定で、高ランクほど多く支払う計算になります。</p>
       </details>
       <details class="logic-box">
-        <summary>傾斜率の違いは？（鬼・松・竹・梅）</summary>
-        <p>鬼=ベース1.6で差が最大、松=1.4、竹=1.2（標準）、梅=1.15（差が小さい）で、ランクが下がるほど支払額を少なくします。</p>
+          <summary>傾斜率の違いは？（鬼・松・竹・梅・平等）</summary>
+          <p>鬼=ベース1.6で差が最大、松=1.4、竹=1.2（標準）、梅=1.15（差が小さい）、平等=1.0（完全等分）です。ランクが下がるほど支払額を少なくしますが、平等を選べば全員同額になります。</p>
       </details>
       <details class="logic-box">
         <summary>人数が0のランクはどうなりますか？</summary>
@@ -570,6 +610,7 @@
       steep: 1.4,
       normal: 1.2,
       gentle: 1.15,
+      equal: 1.0,
     };
 
     const SLOPE_LABELS = {
@@ -577,6 +618,7 @@
       steep: "松（差が大きい）",
       normal: "竹（標準）",
       gentle: "梅（差が小さい）",
+      equal: "平等（等分）",
     };
 
     // ----- ユーティリティ -----
@@ -726,7 +768,7 @@
       // 優先順：小数部 desc -> rank desc（高いランクほど優先）
       fracs.sort((a, b) => {
         if (b.frac !== a.frac) return b.frac - a.frac;
-        return b.i - a.i;
+        return a.i - b.i; // 同率なら上位ランク優先で端数を負担
       });
 
       // 安全策：無限ループ防止
@@ -762,7 +804,7 @@
             // 最小人数の active を選ぶ（同数なら高ランク）
             const minIdx = active.slice().sort((i, j) => {
               if (counts[i] !== counts[j]) return counts[i] - counts[j];
-              return j - i;
+              return i - j; // 同数なら上位ランクに優先して割り当て
             })[0];
             pay[minIdx] += 1;
             diff -= counts[minIdx];
