@@ -7,7 +7,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <title>傾斜くん - 飲み会の傾斜割り勘計算ツール</title>
-  <meta name="description" content="飲み会・歓送迎会の割り勘を傾斜計算。鬼・松・竹・梅・平等の傾斜率で公平に計算できる無料スマホ対応ツール。合計金額と人数を入れるだけの簡単操作。" />
+  <meta name="description" content="飲み会の割り勘を傾斜計算。「飲み会　傾斜」は傾斜くんにお任せ。合計金額と人数を入れるだけの簡単操作。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="傾斜くん - 飲み会の傾斜割り勘計算ツール" />
+  <meta property="og:description" content="飲み会の割り勘を傾斜計算。「飲み会　傾斜」は傾斜くんにお任せ。合計金額と人数を入れるだけの簡単操作。" />
+  <meta property="og:url" content="https://keisha.sakuraproduct.com/" />
+  <meta property="og:image" content="https://keisha.sakuraproduct.com/assets/ogp.png" />
+  <meta property="og:site_name" content="傾斜くん" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="傾斜くん - 飲み会の傾斜割り勘計算ツール" />
+  <meta name="twitter:description" content="飲み会の割り勘を傾斜計算。「飲み会　傾斜」は傾斜くんにお任せ。合計金額と人数を入れるだけの簡単操作。" />
+  <meta name="twitter:image" content="https://keisha.sakuraproduct.com/assets/ogp.png" />
   <style>
     :root {
       --bg: #ffffff;
@@ -353,19 +364,19 @@
       "name": "傾斜くん",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web",
-      "description": "飲み会・歓送迎会の割り勘を鬼・松・竹・梅・平等の傾斜率で公平に計算できる無料のスマホ対応傾斜割り勘ツールです。",
+      "description": "飲み会の割り勘を傾斜計算。「飲み会　傾斜」は傾斜くんにお任せ。合計金額と人数を入れるだけの簡単操作。",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "JPY"
       },
       "featureList": [
-        "鬼・松・竹・梅・平等の5段階傾斜率を選択",
-        "ランクを最大10まで追加",
+        "傾斜計算",
+        "飲み会の傾斜計算",
         "合計金額と人数入力だけで計算",
         "結果をスクリーンショットで保存しやすい表示"
       ],
-      "keywords": "傾斜割り勘, 飲み会, 幹事, 鬼, 松竹梅, 平等, 等分, スマホ対応"
+      "keywords": "傾斜割り勘, 飲み会, 傾斜計算, 飲み会の傾斜計算, 割り勘, スマホ対応"
     }
   </script>
   <script type="application/ld+json">
@@ -403,14 +414,6 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "端数は小数部が大きい順かつ高ランク優先で1円ずつ配分し、高ランク側が先に負担します。"
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "合計金額と結果が必ず一致しますか？",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "各ランクの計算後に1円単位の端数調整を行い、合計金額と一致するまで配分しています。"
               }
             },
             {
@@ -462,8 +465,6 @@
       <div class="pillrow" aria-label="主な機能">
         <span class="pill">合計金額と人数を入力するだけ30秒！</span>
         <span class="pill">傾斜率は鬼・松・竹・梅・平等から選択可能</span>
-        <span class="pill">入力欄はランク10まで追加可能</span>
-        <span class="pill">計算後はスクショ保存しやすい表示</span>
       </div>
     </header>
     <div class="grid">
@@ -484,6 +485,17 @@
               <option value="normal" selected>竹（標準）</option>
               <option value="gentle">梅（差が小さい）</option>
               <option value="equal">平等（等分）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="rounding">丸め単位</label>
+            <select id="rounding">
+              <option value="1">一円単位</option>
+              <option value="100" selected>百円単位</option>
+              <option value="1000">千円単位</option>
             </select>
           </div>
         </div>
@@ -516,6 +528,7 @@
           <div class="resulthead">
             <div class="big">各ランク 1人あたりの支払い額</div>
             <div class="pill-badge" id="slopeBadge" aria-live="polite"></div>
+            <div class="pill-badge" id="roundingBadge" aria-live="polite"></div>
             <div class="small">計算後に結果を表示します。</div>
           </div>
 
@@ -575,8 +588,8 @@
         <p>端数は小数部が大きい順かつ高ランク優先で1円ずつ配分し、高ランク側が先に負担します。</p>
       </details>
       <details class="logic-box">
-        <summary>合計金額と結果が必ず一致しますか？</summary>
-        <p>計算後に1円単位の端数調整を行い、合計金額と完全に一致するまで配分しています。</p>
+        <summary>合計が入力金額を上回ることはありますか？</summary>
+        <p>丸め単位が100円・1000円などで割り切れない場合、最上位ランクの1人あたり額を上乗せして端数を吸収するため、入力合計より数円～数十円程度上回ることがあります。</p>
       </details>
       <details class="logic-box">
         <summary>鬼設定はどのくらい差がつきますか？</summary>
@@ -639,11 +652,14 @@
     const ranksEl = document.getElementById("ranks");
     const totalEl = document.getElementById("total");
     const slopeEl = document.getElementById("slope");
+    const roundingEl = document.getElementById("rounding");
     const errEl = document.getElementById("err");
 
     const resultBodyEl = document.getElementById("resultBody");
     const sumTextEl = document.getElementById("sumText");
+    const sumNoteEl = document.getElementById("sumNote");
     const slopeBadgeEl = document.getElementById("slopeBadge");
+    const roundingBadgeEl = document.getElementById("roundingBadge");
     const resultBoxEl = document.getElementById("resultBox");
 
     let rankCount = DEFAULT_RANKS;
@@ -698,6 +714,15 @@
       }
     }
 
+    function updateRoundingBadge(unit) {
+      if (!roundingBadgeEl) return;
+      const label = Number(unit) === 1 ? "一円単位" : `${yen(Number(unit))}円単位`;
+      roundingBadgeEl.textContent = `丸め単位：${label}`;
+      if (sumNoteEl) {
+        sumNoteEl.textContent = `丸め単位：${label} ／ 結果はスクリーンショットで保存してください。`;
+      }
+    }
+
     // ----- 計算ロジック -----
     function getWeights(base, count) {
       const weights = [];
@@ -718,7 +743,18 @@
       return counts;
     }
 
-    function compute(total, counts, weights) {
+    function gcd(a, b) {
+      while (b !== 0) {
+        const t = a % b;
+        a = b;
+        b = t;
+      }
+      return a;
+    }
+
+    function compute(total, counts, weights, roundingUnit) {
+      const unitStep = Math.max(1, Math.floor(roundingUnit));
+
       // 対象：人数>0 のランクのみ
       const active = [];
       for (let i = 0; i < counts.length; i++) {
@@ -727,6 +763,10 @@
       if (active.length === 0) {
         throw new Error("人数が1人も入力されていません。少なくとも1つのランクに人数を入力してください。");
       }
+
+      // 端数は最上位ランクが1円単位で負担し、それ以外は丸め単位で処理する
+      const topIdx = active[0];
+      const steps = counts.map((_, i) => (i === topIdx ? 1 : unitStep));
 
       // 重み合計（人数×重み）
       let W = 0;
@@ -744,7 +784,8 @@
 
       for (const i of active) {
         const raw = unit * weights[i];
-        const flo = Math.floor(raw);
+        const step = steps[i];
+        const flo = Math.floor(raw / step) * step;
         pay[i] = flo;
         subtotal += flo * counts[i];
 
@@ -784,31 +825,20 @@
 
           for (const c of fracs) {
             const i = c.i;
-            const step = counts[i]; // このランクを1円上げると合計は人数分増える
+            const step = counts[i] * steps[i]; // このランクを steps[i] 円上げると合計は人数分増える
             if (step <= 0) continue;
 
             // 超過しない範囲で足す（最優先）
             if (diff - step >= 0) {
-              pay[i] += 1;
+              pay[i] += steps[i];
               diff -= step;
               advanced = true;
               break;
             }
           }
 
-          // どれも step が大きくて diff を埋められない場合：
-          // 仕方なく「最小 step のランク」に+1して超過する前に別調整…が必要だが、
-          // 円単位で合計一致が必須なので、ここでは
-          // いったん「人数が最小のランク」に加算し、後で減算で戻す方式にする。
-          if (!advanced) {
-            // 最小人数の active を選ぶ（同数なら高ランク）
-            const minIdx = active.slice().sort((i, j) => {
-              if (counts[i] !== counts[j]) return counts[i] - counts[j];
-              return i - j; // 同数なら上位ランクに優先して割り当て
-            })[0];
-            pay[minIdx] += 1;
-            diff -= counts[minIdx];
-          }
+          // どれも step が大きくて diff を埋められない場合はループを抜けて後段でトップランク調整
+          if (!advanced) break;
         } else {
           // diff < 0 のとき：減算が必要（払いすぎ）
           // 優先順：小数部が小さい（=切り捨て損が少ない）-> rank低い（安い側）から下げる
@@ -820,12 +850,12 @@
           let advanced = false;
           for (const c of order) {
             const i = c.i;
-            const step = counts[i];
+            const step = counts[i] * steps[i];
             if (step <= 0) continue;
 
             // 1円下げられる範囲（マイナス支払いは不可）
             if (pay[i] > 0) {
-              pay[i] -= 1;
+              pay[i] -= steps[i];
               diff += step;
               advanced = true;
               break;
@@ -835,15 +865,29 @@
         }
       }
 
+      // ここまでで埋まらない端数が残った場合、最上位ランクの1人あたり額を追加で上げて吸収（多少のオーバーを許容）
+      if (diff !== 0) {
+        const perPersonBump = Math.ceil(diff / counts[topIdx]);
+        if (perPersonBump > 0) {
+          pay[topIdx] += perPersonBump;
+          diff -= perPersonBump * counts[topIdx];
+        }
+      }
+
+      // ガード超過なら打ち切り
+      if (guard >= GUARD_MAX) {
+        throw new Error("丸め調整が収束しませんでした。入力を見直してください。");
+      }
+
       // 最終 subtotal
       let finalTotal = 0;
       for (const i of active) finalTotal += pay[i] * counts[i];
 
-      return { pay, counts, finalTotal, unit, weights };
+      return { pay, counts, finalTotal, unit, weights, inputTotal: total };
     }
 
     function renderResult(result) {
-      const { pay, counts, finalTotal } = result;
+      const { pay, counts, finalTotal, inputTotal } = result;
 
       // テーブル行を作る（人数>0のみ表示）
       const rows = [];
@@ -870,6 +914,13 @@
       }
 
       sumTextEl.textContent = `合計：${yen(finalTotal)} 円`;
+      if (sumNoteEl) {
+        if (inputTotal && finalTotal > inputTotal) {
+          sumNoteEl.textContent = `入力合計 ${yen(inputTotal)} 円に対し、端数調整のため ${yen(finalTotal)} 円（+${yen(finalTotal - inputTotal)} 円）を徴収します。`;
+        } else {
+          sumNoteEl.textContent = "丸め単位：" + (roundingBadgeEl ? roundingBadgeEl.textContent.replace(/^丸め単位：/, "") : "") + " ／ 結果はスクリーンショットで保存してください。";
+        }
+      }
     }
 
     // ----- イベント -----
@@ -902,6 +953,7 @@
       rankCount = DEFAULT_RANKS;
       totalEl.value = "";
       slopeEl.value = "normal";
+        roundingEl.value = "100";
       renderRanks();
       showError("");
       resultBodyEl.innerHTML = `
@@ -913,6 +965,7 @@
       sumTextEl.textContent = "合計：—";
       resultBoxEl.classList.remove("is-ready");
       updateSlopeBadge(slopeEl.value);
+      updateRoundingBadge(Number(roundingEl.value));
       // 画面上部へ（スマホ操作向け）
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -930,19 +983,19 @@
         }
 
         const counts = readPeopleCounts();
+        const roundingUnit = Number(roundingEl.value) || 1;
+        if (![1, 100, 1000].includes(roundingUnit)) {
+          throw new Error("丸め単位の指定が不正です。");
+        }
         const base = SLOPE_BASE[slopeEl.value] ?? SLOPE_BASE.normal;
         const weights = getWeights(base, counts.length);
 
-        const result = compute(total, counts, weights);
-
-        // 合計が一致しない場合（理論上起きにくいが念のため）
-        if (result.finalTotal !== total) {
-          throw new Error(`内部調整に失敗しました（合計が一致しません）。 total=${total}, result=${result.finalTotal}`);
-        }
+        const result = compute(total, counts, weights, roundingUnit);
 
         renderResult(result);
         resultBoxEl.classList.add("is-ready");
         updateSlopeBadge(slopeEl.value);
+        updateRoundingBadge(roundingUnit);
 
         // 結果が見える位置にスクロール（スマホ向け）
         document.getElementById("resultBox").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -955,8 +1008,10 @@
     // 合計金額は「,」や「円」混じりでもOKにしたいので、入力中に整形はしない（貼り付けも想定）
     // 初期レンダリング
     renderRanks();
-  updateSlopeBadge(slopeEl.value);
-  slopeEl.addEventListener("change", () => updateSlopeBadge(slopeEl.value));
+    updateSlopeBadge(slopeEl.value);
+    updateRoundingBadge(Number(roundingEl.value));
+    slopeEl.addEventListener("change", () => updateSlopeBadge(slopeEl.value));
+    roundingEl.addEventListener("change", () => updateRoundingBadge(Number(roundingEl.value)));
   </script>
 </body>
 </html>
